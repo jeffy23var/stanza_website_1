@@ -110,17 +110,20 @@
     const dots = stage.querySelectorAll(".story-progress i");
     const n = chapters.length;
     let current = 0;
+    // Only one chapter is ever visible: CSS fades the old one out first, then the new one in
     function show(i) {
       if (i === current) return;
-      gsap.to(pics[current], { opacity: 0, duration: 1.1, ease: "power2.out" });
-      gsap.fromTo(pics[i], { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 1.6, ease });
-      gsap.to(chapters[current], { opacity: 0, y: -24, duration: 0.6, ease: "power2.in" });
-      gsap.fromTo(chapters[i], { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 1.1, ease, delay: 0.25 });
+      chapters[current].classList.remove("is-active");
+      pics[current].classList.remove("is-active");
+      chapters[i].classList.add("is-active");
+      pics[i].classList.add("is-active");
       current = i;
       dots.forEach((d, j) => d.classList.toggle("on", j <= i));
     }
+    stage.classList.add("is-pinned");
+    chapters[0].classList.add("is-active");
+    pics[0].classList.add("is-active");
     dots[0] && dots[0].classList.add("on");
-    gsap.set(chapters, { opacity: 0 }); gsap.set(chapters[0], { opacity: 1 });
     ScrollTrigger.create({
       trigger: stage, pin: ".story-pin", start: "top top", end: () => "+=" + window.innerHeight * (n - 0.3),
       onUpdate: self => show(Math.min(n - 1, Math.floor(self.progress * n * 0.999)))
