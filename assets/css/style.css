@@ -526,3 +526,69 @@ html:has(dialog[open]) { overflow: hidden; }
   .story-stage.is-pinned .story-pics img { opacity: 0; transform: scale(1.06); transition: opacity 1s ease, transform 1.6s var(--ease); }
   .story-stage.is-pinned .story-pics img.is-active { opacity: 1; transform: none; }
 }
+
+/* ---------- Shader hero (home) ---------- */
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url("../fonts/bodoni-moda-italic.woff") format("woff");
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
+.hero--shader { background: radial-gradient(120% 90% at 70% 30%, #6B5038 0%, #2A211B 45%, #14100D 100%); }
+.hero--shader::after { background: linear-gradient(180deg, rgba(10,8,6,.35) 0%, rgba(10,8,6,0) 28%, rgba(10,8,6,0) 50%, rgba(10,8,6,.55) 100%); }
+.hero-shader { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1.6s ease; }
+.hero-shader.ready { opacity: 1; }
+.hero-title { font-size: clamp(3.2rem, 8.6vw, 8.6rem); max-width: 12ch; }
+.hero-title .shimmer {
+  font-size: .62em; letter-spacing: .01em; padding-bottom: .08em;
+  background: linear-gradient(105deg, #F6EEDF 0%, #E2C597 28%, #B8925A 50%, #F1DFC0 72%, #F6EEDF 100%);
+  background-size: 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmer 10s linear infinite;
+}
+.hero-title .ital { font-style: italic; font-weight: 400; color: rgba(255,255,255,.82); }
+@keyframes shimmer { from { background-position: 0% 50%; } to { background-position: 260% 50%; } }
+
+.glass-pill {
+  position: relative; display: inline-flex; align-items: center; gap: 10px; margin: 0 0 26px;
+  padding: 9px 18px; border-radius: 999px; font-size: .92rem; color: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+}
+.glass-pill::before { content: ""; position: absolute; top: -1px; left: 14px; right: 14px; height: 1px; background: linear-gradient(90deg, transparent, rgba(226,197,151,.8), transparent); }
+.glass-pill::after { content: ""; order: -1; width: 7px; height: 7px; border-radius: 50%; background: #E2C597; box-shadow: 0 0 0 0 rgba(226,197,151,.6); animation: ping 2.4s ease-out infinite; }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(226,197,151,.55); } 80%, 100% { box-shadow: 0 0 0 9px rgba(226,197,151,0); } }
+
+.btn-brass { background: linear-gradient(100deg, #D7B67F 0%, #B8925A 55%, #9C7A48 100%); color: #17120C; font-weight: 600; box-shadow: 0 14px 34px -14px rgba(184,146,90,.7); }
+.btn-brass:hover { transform: translateY(-1px) scale(1.02); filter: brightness(1.06); }
+.hero .btn-ghost { color: #fff; border-color: rgba(255,255,255,.35); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.hero .btn-ghost:hover { border-color: rgba(226,197,151,.7); background: rgba(255,255,255,.08); }
+.btn:active { transform: scale(.97); }
+
+/* Rotating seal with a pulsing brass ring */
+.seal { position: absolute; z-index: 3; right: var(--gutter); bottom: clamp(36px, 7vh, 80px); width: 124px; height: 124px; display: block; color: #fff; }
+.seal-ring {
+  position: absolute; inset: 31px; border-radius: 50%;
+  background: conic-gradient(#B8925A, #F3E3C3, #8C7F71, #E2C597, #4A3729, #D7B67F, #B8925A);
+  -webkit-mask: radial-gradient(circle, transparent 54%, #000 58%, #000 70%, transparent 74%);
+  mask: radial-gradient(circle, transparent 54%, #000 58%, #000 70%, transparent 74%);
+  filter: blur(1.5px) drop-shadow(0 0 10px rgba(226,197,151,.55));
+  animation: spin 7s linear infinite, pulse 3.2s ease-in-out infinite;
+}
+.seal::after { content: ""; position: absolute; inset: 52px; border-radius: 50%; background: radial-gradient(circle, #F3E3C3, #B8925A 70%); box-shadow: 0 0 18px rgba(226,197,151,.6); transition: transform .5s var(--ease); }
+.seal:hover::after { transform: scale(1.25); }
+.seal-text { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; animation: spin 22s linear infinite; }
+.seal-text text { font-family: var(--sans); font-size: 8.2px; letter-spacing: .9px; fill: rgba(255,255,255,.82); }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { opacity: .75; scale: 1; } 50% { opacity: 1; scale: 1.06; } }
+@media (max-width: 760px) { .seal { display: none; } }
+
+/* Gooey "Book a visit" button in the header */
+.nav-cta.goo { position: relative; padding: 0; border: 0; background: none; display: inline-flex; align-items: center; filter: url(#goo); --cta-bg: var(--graphite); --cta-fg: var(--paper); }
+.nav-cta.goo:hover { background: none; }
+.on-dark:not(.scrolled) .nav-cta.goo { --cta-bg: #F5F1EA; --cta-fg: #1C1A18; }
+.goo-label { position: relative; z-index: 1; display: inline-block; padding: 10px 20px; border-radius: 999px; background: var(--cta-bg); color: var(--cta-fg); font-size: .92rem; line-height: 1.2; transition: background-color .4s, color .4s; }
+.goo-arrow { position: absolute; left: 6px; top: 50%; width: 34px; height: 34px; margin-top: -17px; border-radius: 50%; background: var(--cta-bg); color: var(--cta-fg); display: grid; place-items: center; transition: transform .55s var(--ease), background-color .4s, color .4s; }
+.nav-cta.goo:hover .goo-arrow, .nav-cta.goo:focus-visible .goo-arrow { transform: translateX(-42px) rotate(0deg); }
+@media (prefers-reduced-motion: reduce) { .hero-title .shimmer, .seal-ring, .seal-text, .glass-pill::after { animation: none; } }
+@media (max-width: 900px) { .nav-cta.goo { display: none; } }

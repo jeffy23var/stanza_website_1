@@ -90,10 +90,13 @@
   if (hero) {
     const img = hero.querySelector(".hero-media img");
     const tl = gsap.timeline({ defaults: { ease } });
-    tl.from(img, { scale: 1.14, duration: 2.4 })
+    if (img) tl.from(img, { scale: 1.14, duration: 2.4 });
+    tl.from(hero.querySelectorAll(".glass-pill"), { opacity: 0, y: 20, duration: 1.1 }, 0.1)
       .from(hero.querySelectorAll(".hero-line > span"), { yPercent: 110, duration: 1.4, stagger: 0.09 }, 0.25)
       .from(hero.querySelectorAll(".lede, .btn-row"), { opacity: 0, y: 18, duration: 1.2, stagger: 0.1 }, 0.7);
-    gsap.to(img, { yPercent: 12, scale: 1.06, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.6 } });
+    // Apple-style: the hero copy drifts up and softens as you scroll away
+    gsap.to(hero.querySelector(".hero-copy"), { yPercent: -14, opacity: 0.15, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.6 } });
+    if (img) gsap.to(img, { yPercent: 12, scale: 1.06, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.6 } });
   }
 
   // Brand-page hero images: gentle parallax inside their frame
